@@ -1,0 +1,1 @@
+python ./resources/waifuc_booru_gui.py
