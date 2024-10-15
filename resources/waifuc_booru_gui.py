@@ -8,6 +8,26 @@ from waifuc.action import NoMonochromeAction, FilterSimilarAction, TaggingAction
 from waifuc.export import TextualInversionExporter
 from waifuc.source import DanbooruSource, GelbooruSource
 
+class MultiWordCompleter(QCompleter):
+    def __init__(self, *args, **kwargs):
+        super(MultiWordCompleter, self).__init__(*args, **kwargs)
+        self.setCaseSensitivity(Qt.CaseInsensitive)
+        self.setFilterMode(Qt.MatchContains)
+        self.setCompletionMode(QCompleter.PopupCompletion)
+
+    def pathFromIndex(self, index):
+        path = QCompleter.pathFromIndex(self, index)
+        words = self.widget().text().split()
+        if len(words) > 1:
+            path = f"{' '.join(words[:-1])} {path}"
+        return path
+
+    def splitPath(self, path):
+        words = path.split()
+        if len(words) > 1:
+            return [words[-1]]
+        return [path]
+
 class CrawlerThread(QThread):
     finished = pyqtSignal()
 
@@ -19,7 +39,6 @@ class CrawlerThread(QThread):
         self.enable_tagging = enable_tagging
         self.max_count = max_count
         self.output_path = output_path
-        self.is_running = True
 
     def run(self):
         s = self.source([self.search_term])
@@ -35,9 +54,6 @@ class CrawlerThread(QThread):
             TextualInversionExporter(self.output_path)
         )
         self.finished.emit()
-
-    def stop(self):
-        self.is_running = False
 
 class WaifucGUI(QWidget):
     def __init__(self):
@@ -59,9 +75,7 @@ class WaifucGUI(QWidget):
 
         # 2. Search term with autocomplete
         self.search_term = QLineEdit()
-        self.completer = QCompleter()
-        self.completer.setFilterMode(Qt.MatchContains)
-        self.completer.setCaseSensitivity(Qt.CaseInsensitive)
+        self.completer = MultiWordCompleter()
         self.search_term.setCompleter(self.completer)
         layout.addWidget(QLabel('Search Term:'))
         layout.addWidget(self.search_term)
@@ -70,7 +84,7 @@ class WaifucGUI(QWidget):
         self.resize_size = QSpinBox()
         self.resize_size.setRange(100, 10000)
         self.resize_size.setValue(1500)
-        layout.addWidget(QLabel('Resize Size(if image too big):'))
+        layout.addWidget(QLabel('Resize Size:'))
         layout.addWidget(self.resize_size)
 
         # 4. Tagging checkbox
@@ -97,7 +111,7 @@ class WaifucGUI(QWidget):
 
         # Start button
         self.start_button = QPushButton('Start Crawling')
-        self.start_button.clicked.connect(self.toggleCrawling)
+        self.start_button.clicked.connect(self.startCrawling)
         layout.addWidget(self.start_button)
 
         # Progress info
@@ -152,16 +166,9 @@ class WaifucGUI(QWidget):
 
     def onSourceChanged(self, source):
         if source == 'Danbooru':
-            self.search_term.setMaxLength(1000)
+            self.search_term.setMaxLength(1000)  # Approximate limit for two words
         else:
-            self.search_term.setMaxLength(32767)
-
-    def toggleCrawling(self):
-        if self.crawler_thread and self.crawler_thread.isRunning():
-            self.crawler_thread.stop()
-            self.start_button.setText('Start Crawling')
-        else:
-            self.startCrawling()
+            self.search_term.setMaxLength(32767)  # Default max length
 
     def startCrawling(self):
         self.saveSettings()
@@ -176,6 +183,7 @@ class WaifucGUI(QWidget):
             QMessageBox.warning(self, 'Warning', 'For Danbooru, please use a maximum of 2 words for the search term.')
             return
 
+        self.start_button.setEnabled(False)
         self.crawler_thread = CrawlerThread(
             source,
             self.search_term.text(),
@@ -186,11 +194,9 @@ class WaifucGUI(QWidget):
         )
         self.crawler_thread.finished.connect(self.onCrawlingFinished)
         self.crawler_thread.start()
-        
-        self.start_button.setText('Stop Crawling')
 
     def onCrawlingFinished(self):
-        self.start_button.setText('Start Crawling')
+        self.start_button.setEnabled(True)
         QMessageBox.information(self, 'Information', 'Crawling completed!')
 
 if __name__ == '__main__':
