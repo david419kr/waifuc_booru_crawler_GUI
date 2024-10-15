@@ -3,7 +3,7 @@ This is a GUI wrapper for [waifuc](https://github.com/deepghs/waifuc).
 Tested on Python 3.10 at Windows environment.  
   
 How to run
-1. Download this repository as a zip file, or "git clone https://github.com/david419kr/waifuc_booru_crawler_GUI.git"
+1. [Download this repository as a zip file](https://github.com/david419kr/waifuc_booru_crawler_GUI/archive/refs/heads/main.zip), or "git clone https://github.com/david419kr/waifuc_booru_crawler_GUI.git"
 2. Run 0_install.bat
 3. Run 1_start_gui.bat
 
