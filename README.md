@@ -20,7 +20,10 @@ Selectable from Danbooru and Gelbooru.
 Search Term:  
 Your search term. If source id Danbooru, search terms are limited as 2 words.  
 Supports autocomplete feature from danbooru.csv, which is included.  
-![image](https://github.com/user-attachments/assets/2ef3b5a9-14c4-46c9-8a79-1a6a18502de9)
+![image](https://github.com/user-attachments/assets/2ef3b5a9-14c4-46c9-8a79-1a6a18502de9)  
+Each terms are separated by ' '(space bar). It's same as searching at booru sites.  
+![image](https://github.com/user-attachments/assets/27e5975a-f9d3-4e11-acb0-3081a7c224e5)  
+
 
 Resize size:  
 If the image is too large, it will be resized based on the shorter side of the x and y dimensions, according to the specified number.  
