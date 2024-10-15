@@ -18,7 +18,7 @@ Selectable from Danbooru and Gelbooru.
 ![image](https://github.com/user-attachments/assets/5b7b3607-c08e-449d-bc90-2826a52617e2)
 
 Search Term:  
-Your search term. If source id Danbooru, search terms are limited as 2 words.  
+Your search term. If source is Danbooru, search terms are limited as 2 words.  
 Supports autocomplete feature from danbooru.csv, which is included.  
 Each terms are separated by ' '(space bar). It's same as searching at booru sites.  
 ![image](https://github.com/user-attachments/assets/27e5975a-f9d3-4e11-acb0-3081a7c224e5)  
