@@ -1,4 +1,5 @@
 # waifuc_booru_crawler_GUI
+This is a GUI wrapper for waifuc.  
 Tested on Python 3.10 at Windows environment.  
   
 How to run

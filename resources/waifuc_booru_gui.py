@@ -115,7 +115,7 @@ class WaifucGUI(QWidget):
             with open(csv_path, 'r', encoding='utf-8') as f:
                 reader = csv.reader(f)
                 for row in reader:
-                    if row:  # 빈 행 건너뛰기
+                    if row:  # skip empty rows
                         item = QStandardItem(row[0])
                         model.appendRow(item)
         except FileNotFoundError:
@@ -152,9 +152,9 @@ class WaifucGUI(QWidget):
 
     def onSourceChanged(self, source):
         if source == 'Danbooru':
-            self.search_term.setMaxLength(40)  # Approximate limit for two words
+            self.search_term.setMaxLength(1000)
         else:
-            self.search_term.setMaxLength(32767)  # Default max length
+            self.search_term.setMaxLength(32767)
 
     def toggleCrawling(self):
         if self.crawler_thread and self.crawler_thread.isRunning():
