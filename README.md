@@ -19,9 +19,10 @@ Selectable from Danbooru and Gelbooru.
 
 Search Term:  
 Your search term. If source is Danbooru, search terms are limited as 2 words.  
-Supports autocomplete feature from danbooru.csv, which is included.  
-Each terms are separated by ' '(space bar). It's same as searching at booru sites.  
+Supports autocomplete feature from danbooru.csv, which is included.    
 ![image](https://github.com/user-attachments/assets/27e5975a-f9d3-4e11-acb0-3081a7c224e5)  
+Each terms are separated by ' '(space bar). If you add '-' before search term, it will be excluded. It's same as searching at booru sites.  
+For example, the search term "elf -\*boy\*" will get results for "elf", with "1boy, 2boys, ..." excluded.  
 
 
 Resize size:  
